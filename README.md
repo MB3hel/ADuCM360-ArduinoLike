@@ -5,7 +5,10 @@ NOTE: Everything was tested on the ADICUP360 board ONLY.
 
 NOTE: These are not official Analog Devices libraries.
 ## Install
-Download or clone the repository. Copy the contents of the include directory into the project's include directory. Copy the contents of the src directory into the project's src directory.
+#### Stable
+Go to the [releases page](https://github.com/MB3hel/ADuCM360-ArduinoLike/releases "Releases") and download the latest release. Copy the contents of the include directory into your project's include directory. Copy the contents of the src directory into your project's src directory.
+#### Newest
+Download or clone the repository. Copy the contents of the include directory into your project's include directory. Copy the contents of the src directory into your project's src directory.
 ## Use
 - To use most libraries include the ArduinoLike.h file.
 ```cpp
