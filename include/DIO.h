@@ -1,3 +1,6 @@
+#ifndef __DIO_H__
+#define __DIO_H__
+
 #define HIGH 1
 #define LOW 0
 #define NO_OUT -1
@@ -15,3 +18,5 @@ public:
 	void digitalToggle(int bar, int pin);
 
 };
+
+#endif

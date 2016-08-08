@@ -4,12 +4,18 @@
 #define PIN12 12
 #define PIN67 67
 
+#include <sstream>
+
+#define ToString( x ) static_cast< std::ostringstream & >( \
+        ( std::ostringstream() << std::dec << x ) ).str()
+
 using namespace std;
 
 class Serial{
    long rate;
+   int initilized = -1;
 	public:
-		void begin(long buadRate);
+   	int isInitilized();
 		void begin(long buadRate, int pins);
 		int available();
 		char read();
@@ -20,5 +26,7 @@ class Serial{
 		void println(string s);
 		void println(char *cs);
 		void println();
-		void setPins(int pins);
+		void print(int i);
+		void println(int i);
+
 };

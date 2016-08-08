@@ -1,68 +1,60 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ADuCM360.h>
-#include "diag/Trace.h"
+#include "SpiLib.h"
+#include "DioLib.h"
 #include "ArduinoLike.h"
+#include "ArduinoEthernet/Ethernet.h"
+#include "ArduinoEthernet/EthernetUdp.h"
 
-using namespace std;
-using namespace ArduinoLike;
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+IPAddress ip(192, 168, 0, 129);
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wmissing-declarations"
-#pragma GCC diagnostic ignored "-Wreturn-type"
+int port = 8888;
 
-const unsigned use_irq = 1;
+char packetBuffer[UDP_TX_PACKET_MAX_SIZE];
+char  ReplyBuffer[] = "acknowledged";
 
-int main(int argc, char* argv[]){
+EthernetUDP udp;
 
-   pinMode(0, 4, OUT);
-   pinMode(0, 5, OUT);
+int main(){
 
-   serial.begin(B9600);
+	serial.begin(9600, PIN67); //Can't use PIN12 with SPI
 
-   long lastToggle1 = 0;
-   long lastToggle2 = 0;
-   long lastSerial = 0;
+	if(Ethernet.begin(mac) == 0){
 
-   long toggle1 = 1000;
-   long toggle2 = 500;
-   long serialMessage = 500;
+		serial.println("Failed to start!");
+		serial.println("[STOP]");
+		while(1);
 
-   while (1){
+	}
 
-         long ms = millis();
+	udp.begin(port);
 
-         if(ms - lastToggle1 >= toggle1){
+	serial.print("IP: ");
+	serial.println(ipToString(Ethernet.localIP()));
 
-               digitalToggle(0, 4);
-               lastToggle1 = ms;
+	while(1){
 
-         }
+		int packetsize = udp.parsePacket();
+		if(packetsize){
 
-         if(ms - lastToggle2 >= toggle2){
+			serial.print("Recieved packer of size ");
+			serial.println(packetsize);
+			serial.print("From ");
+			serial.print(ipToString(udp.remoteIP()));
+			serial.print(", port ");
+			serial.println(udp.remotePort());
 
-               digitalToggle(0, 5);
-               lastToggle2 = ms;
+			udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
+			serial.println("Contents:");
+			serial.println(packetBuffer);
 
-         }
+			udp.beginPacket(udp.remoteIP(), udp.remotePort());
+			udp.write(ReplyBuffer);
+			udp.endPacket();
 
-         if(ms - lastSerial >= serialMessage){
+		}
 
-               serial.begin(B9600, PIN12);
-               serial.println("PC");
-               delay(5);//Time to spit out before switch ports
+		delay(10);
 
-               serial.begin(B9600, PIN67);
-               serial.println("Arduino");
-               delay(10);//Time to spit out before switch ports
-
-               lastSerial = millis();
-
-         }
-
-   }
+	}
 
 }
-
-#pragma GCC diagnostic pop

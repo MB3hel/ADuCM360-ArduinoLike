@@ -94,7 +94,7 @@ extern unsigned int           uart_echo, uart_cmd, uart_ctrlc, uart_tbusy;
 extern unsigned char          uart_rx_buffer[UART_RX_BUFFER_SIZE];
 extern unsigned char          uart_tx_buffer[UART_TX_BUFFER_SIZE];
 
-
+int UART_GetActive();
 /* Initializes the UART communication peripheral. */
 void UART_Init(long lBaudrate, int iBits, int pins);
 

@@ -1,6 +1,7 @@
 #include "Serial.h"
 #include <string>
 #include <cstring>
+#include <stdlib.h>
 
 #define CTRL_C_ 	    3
 #define BS_       	 8
@@ -73,6 +74,7 @@ void intHandeler(void){
 
 }
 
+
 extern "C"{
 
 	void UART_Int_Handler (void){
@@ -83,25 +85,18 @@ extern "C"{
 
 }
 
-void Serial::begin(long buadRate){
+int Serial::isInitilized(){
 
-   rate = buadRate;
-
-	UART_Init(buadRate, COMLCR_WLS_8BITS, PIN12);
+	return initilized;
 
 }
 
 void Serial::begin(long buadRate, int pins){
 
    rate = buadRate;
+   initilized = pins;
 
    UART_Init(buadRate, COMLCR_WLS_8BITS, pins);
-
-}
-
-void Serial::setPins(int pins){
-
-   this->begin(rate, pins);
 
 }
 
@@ -167,6 +162,23 @@ void Serial::println(char *cs){
 
 void Serial::println(){
 
+	UART_WriteString("\r\n");
+
+}
+
+void Serial::print(int i){
+
+	char buf[20];
+	itoa(i, buf, 10);
+	UART_WriteString(buf);
+
+}
+
+void Serial::println(int i){
+
+	char buf[20];
+	itoa(i, buf, 10);
+	UART_WriteString(buf);
 	UART_WriteString("\r\n");
 
 }

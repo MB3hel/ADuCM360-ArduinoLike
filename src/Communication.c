@@ -66,15 +66,32 @@ unsigned int         uart_echo, uart_cmd, uart_ctrlc, uart_tbusy;
    @brief UART initialization
 
 **/
+
+int a = -1;
+
+int UART_GetActive(){
+
+	return a;
+
+}
+
 void UART_Init(long lBaudrate, int iBits, int pins){
 
 	if(pins == 12){
 
-		DioCfg(pADI_GP0, 0x003C);
+		if((pADI_GP0->GPCON & 0x003C) == 0)
+			DioCfg(pADI_GP0, pADI_GP0->GPCON | 0x003C);
+		else
+			DioCfg(pADI_GP0, 0x003C);
+		a = 12;
 
 	}else if(pins == 67){
 
-		DioCfg(pADI_GP0, 0x9000);
+		if((pADI_GP0->GPCON & 0x9000) == 0)
+			DioCfg(pADI_GP0, pADI_GP0->GPCON | 0x9000);
+		else
+			DioCfg(pADI_GP0, 0x9000);
+		a = 67;
 
 	}
 
