@@ -1,5 +1,7 @@
 # ADuCM360-ArduinoLike
-C++ Arduino-Like libraries to make ADuCM360 based boards more user friendly.
+MIT Licensed* C++ Arduino-Like libraries to make ADuCM360 based boards more user friendly.
+
+*All ported Arduino libraries are under the GNU Lesser General Public License. You can find the license in this repository (gpl_arduino_license.txt) or [here](https://github.com/arduino/Arduino/blob/master/license.txt).
 
 NOTE: Everything was tested on the ADICUP360 board ONLY.
 
@@ -18,7 +20,7 @@ Download or clone the repository. Copy the contents of the include directory int
 ```cpp
 #include "ArduinoEthernet/Ethernet.h"
 #include "ArduinoEthernet/EthernetUdp.h"
-#include "ArduinoEthernet/w5100.h"
+#include "ArduinoEthernet/utility/w5100.h"
 //IPAddress and other dependencies are in "ArduinoEthernet/dependency"
 #include "ArduinoEthernet/dependency/IPAddress.h"
 ```
@@ -52,4 +54,4 @@ The actual ethernet shield library for the arduino was ported over. Everything s
 
 NOTE: Included files have "ArduinoEhternet/" in front of the file name used for the arduino (without the quotes).
 
-NOTE: I plan to add SD card support very soon.
+NOTE: I plan to add SD card support soon.
